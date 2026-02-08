@@ -2,6 +2,7 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 #y=mx+c
 weight=0.7
 bias=0.3
