@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-
+from torch import nn
 
 #y=mx+c
 weight=0.7
@@ -49,6 +49,49 @@ def plot_predictions(train_data=X_train, train_labels=y_train, test_data=X_test,
       plt.legend(prop={"size": 14});
       plt.show()
 plot_predictions()
+
+class prediction_linear_model(nn.Module):      ##nn.module is parent of it , inheritance To known more about nn.module refer to file called nn_module
+    def __init__(self):  #constructor of prediction_linear_model
+        super().__init__()  #calling constructor nn.module (parent of prediction_linear_model)
+        self.weight=nn.Parameter(torch.randn(1, # <- start with random weights (this will get adjusted as the model learns)
+                                 dtype=torch.float), # <- PyTorch loves float32 by default
+                                 requires_grad=True) # <- can we update this value with gradient descent?)
+
+        self.bias = nn.Parameter(torch.randn(1, 
+                                             dtype=torch.float),
+                                 requires_grad=True) 
+
+        # Forward defines the computation in the model
+    def forward(self, x: torch.Tensor) -> torch.Tensor: # <- "x" is the input data (e.g. training/testing features)
+        return self.weight* x + self.bias # <- this is the linear regression formula (y = m*x + b)
+
+# Set manual seed since nn.Parameter are randomly initialized
+torch.manual_seed(42)
+
+# Create an instance of the model (this is a subclass of nn.Module that contains nn.Parameter(s))
+
+PLM=prediction_linear_model()
+# Check the nn.Parameter(s) within the nn.Module subclass we created
+print(PLM.parameters())
+print(list(PLM.parameters()))
+#List named parameters 
+print(PLM.state_dict())
+
+
+# Make predictions with model
+with torch.inference_mode(): 
+    y_preds = PLM(X_test)
+
+# Note: in older PyTorch code you might also see torch.no_grad()
+# with torch.no_grad():
+#   y_preds = PLM(X_test)
+# Check the predictions
+print(f"Number of testing samples: {len(X_test)}") 
+print(f"Number of predictions made: {len(y_preds)}")
+print(f"Predicted values:\n{y_preds}")
+print(f"required values:\n{y_test}")
+print("difference b/w y_test-y_preds",y_test-y_preds)
+
 
 
 
