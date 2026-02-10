@@ -24,6 +24,11 @@ Without nn.Module, PyTorch would not know:
     how to collect parameters
     how to move model to GPU
     how to switch train/eval modes
+    Gradients computed
+    Automatically included in model.parameters()
+    Optimizer will update it
+    Registered in nn.Module
+    Appears in model.parameters()   ->  returns ALL learnable parameters of the model
 """
 
 """
@@ -204,4 +209,14 @@ It means:
 It behaves like a normal tensor
 PyTorch knows it’s a learnable parameter
 .grad will be populated after loss.backward()
+
+
+Why not just use a normal tensor?
+self.w = torch.randn(1)
+ This will NOT be learned
+
+Think of it like thi:
+nn.Module = model container
+nn.Parameter = variables the model is allowed to change
+Optimizer = mechanic that tunes those variables
 """
