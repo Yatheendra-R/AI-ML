@@ -79,18 +79,58 @@ print(PLM.state_dict())
 
 
 # Make predictions with model
+#This is doing prediction (inference), not training.
 with torch.inference_mode(): 
-    y_preds = PLM(X_test)
+    y_preds = PLM(X_test)         # internal y_preds = PLM.forward(X_test)
 
-# Note: in older PyTorch code you might also see torch.no_grad()
-# with torch.no_grad():
-#   y_preds = PLM(X_test)
+"""
+calls forward()
+uses current weights and bias
+computes predictions
+y = w·x + b
+
+
+Inside this block:
+
+Gradient tracking is DISABLED:
+No computation graph:
+No .grad storage
+Faster execution: Skips autograd bookkeeping
+Less memory usage: Especially important for big models
+Safer inference: Prevents accidental .backward()
+
+
+By default, PyTorch:
+
+      tracks every operation
+      builds a computation graph
+      prepares for backpropagation
+
+But during testing / prediction:
+
+      we are NOT calling loss.backward()
+      we do NOT want gradients
+      we just want numbers
+"""
+"""
+Note: in older PyTorch code you might also see torch.no_grad()
+with torch.no_grad():
+      y_preds = PLM(X_test)
+"""
+
 # Check the predictions
 print(f"Number of testing samples: {len(X_test)}") 
 print(f"Number of predictions made: {len(y_preds)}")
 print(f"Predicted values:\n{y_preds}")
 print(f"required values:\n{y_test}")
+
+plot_predictions(predictions=y_preds)
+# predictions look pretty bad...
+#our model is just using random parameter values to make predictions. It hasn't even looked at the blue dots to try to predict the green dots.
+
 print("difference b/w y_test-y_preds",y_test-y_preds)
+
+
 
 
 
