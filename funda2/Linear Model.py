@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from torch import nn
 
 #y=mx+c
-weight=0.7
-bias=0.3
+weight=0.7  #m
+bias=0.3   #c
 start = 0
 end = 1
 step = 0.02
@@ -62,7 +62,7 @@ class prediction_linear_model(nn.Module):      ##nn.module is parent of it , inh
                                  requires_grad=True) 
 
         # Forward defines the computation in the model
-    def forward(self, x: torch.Tensor) -> torch.Tensor: # <- "x" is the input data (e.g. training/testing features)
+    def forward(self, x: torch.Tensor) :#-> torch.Tensor: # <- "x" is the input data (e.g. training/testing features)
         return self.weight* x + self.bias # <- this is the linear regression formula (y = m*x + b)
 
 # Set manual seed since nn.Parameter are randomly initialized
@@ -476,63 +476,63 @@ for epoch in range(epochs):
             Update weights using gradients
             Move downhill
       """
-"""
-Mental dry-run
-setup
+      """
+      Mental dry-run
+      setup
 
-One weight: w
+      One weight: w
 
-Input: x = 2
+      Input: x = 2
 
-True value: y = 10
+      True value: y = 10
 
-Learning rate: 0.1
+      Learning rate: 0.1
 
-Step A: Forward pass
+      Step A: Forward pass
 
-      Assume:
+            Assume:
 
-            w = 3
-            ŷ = w × x = 6
-            
-            Model is under-predicting.
+                  w = 3
+                  ŷ = w × x = 6
+                  
+                  Model is under-predicting.
 
-Step B: Loss
+      Step B: Loss
 
-      Loss is positive and big (prediction far from 10).
-      You don’t care about the exact number — only that it’s high.
+            Loss is positive and big (prediction far from 10).
+            You don’t care about the exact number — only that it’s high.
 
-Step C: Backward pass
+      Step C: Backward pass
 
-      PyTorch figures out:
-            Increasing w → increases ŷ
-            Increasing ŷ → reduces loss
+            PyTorch figures out:
+                  Increasing w → increases ŷ
+                  Increasing ŷ → reduces loss
 
-      So:
-
-            Gradient of loss w.r.t w is negative
-            This is the key result.
-
-Step D: Optimizer step
-
-      Optimizer does:
-            w_new = w − lr × gradient
-            Since gradient is negative:
-            Minus (negative) → w increases
-            
             So:
-                  w goes from 3 → something bigger
-                  Prediction gets closer to 10 ✅
 
-Step E: Zero grad
-      Gradients cleared so they don’t accumulate accidentally.
+                  Gradient of loss w.r.t w is negative
+                  This is the key result.
 
+      Step D: Optimizer step
 
-"""
+            Optimizer does:
+                  w_new = w − lr × gradient
+                  Since gradient is negative:
+                  Minus (negative) → w increases
+                  
+                  So:
+                        w goes from 3 → something bigger
+                        Prediction gets closer to 10 ✅
+
+      Step E: Zero grad
+            Gradients cleared so they don’t accumulate accidentally.
+
 
       """
-      Forward tells me where I am, loss tells me how bad it is, backward tells me which way is down,
-      optimizer moves me, zero_grad resets for the next step.
+
+      """
+            Forward tells me where I am, loss tells me how bad it is, backward tells me which way is down,
+            optimizer moves me, zero_grad resets for the next step.
       """
 
       PLM.eval() 
