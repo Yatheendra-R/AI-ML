@@ -167,3 +167,34 @@ Optimizer                                           | SGD, Adam, etc.           
 
 """
 
+"""
+
+different problem types require different loss functions.
+
+For example, for a regression problem (predicting a number) you might use mean absolute error (MAE) loss.
+And for a binary classification problem (like ours), you'll often use binary cross entropy as the loss function.
+
+However, the same optimizer function can often be used across different problem spaces.
+
+For example, the stochastic gradient descent optimizer (SGD, torch.optim.SGD()) can be used for a range of problems, and the same applies to the Adam optimizer (torch.optim.Adam()).
+
++--------------------------------------+------------------------------+----------------------------------------------+
+| Loss Function / Optimizer           | Problem Type                 | PyTorch Code                                 |
++--------------------------------------+------------------------------+----------------------------------------------+
+| Stochastic Gradient Descent (SGD)   | Classification, Regression,  | torch.optim.SGD()                            |
+| Optimizer                           | and many others              |                                              |
++--------------------------------------+------------------------------+----------------------------------------------+
+| Adam Optimizer                      | Classification, Regression,  | torch.optim.Adam()                           |
+|                                      | and many others              |                                              |
++--------------------------------------+------------------------------+----------------------------------------------+
+| Binary Cross Entropy Loss           | Binary Classification        | torch.nn.BCEWithLogitsLoss()                 |
+|                                      |                              | torch.nn.BCELoss()                           |
++--------------------------------------+------------------------------+----------------------------------------------+
+| Cross Entropy Loss                  | Multi-class Classification   | torch.nn.CrossEntropyLoss()                  |
++--------------------------------------+------------------------------+----------------------------------------------+
+| Mean Absolute Error (MAE) / L1 Loss | Regression                   | torch.nn.L1Loss()                            |
++--------------------------------------+------------------------------+----------------------------------------------+
+| Mean Squared Error (MSE) / L2 Loss  | Regression                   | torch.nn.MSELoss()                           |
++--------------------------------------+------------------------------+----------------------------------------------+
+
+"""
