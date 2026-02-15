@@ -23,6 +23,7 @@ X_blob,Y_blob=make_blobs(n_samples=n_sample,
 plt.figure(figsize=(10, 7))
 plt.scatter(X_blob[:, 0], X_blob[:, 1], c=Y_blob, cmap=plt.cm.RdYlBu);
 plt.show()
+print(Y_blob.dtype)
 X_blob=torch.from_numpy(X_blob).to(dtype=torch.float32)
 Y_blob=torch.from_numpy(Y_blob).to(dtype=torch.long)
 

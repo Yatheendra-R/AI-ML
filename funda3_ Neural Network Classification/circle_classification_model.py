@@ -12,7 +12,7 @@ random.seed(42)
 torch.manual_seed(42)
 np.random.seed(42)
 n_samples=1000
-X,Y=make_circles(n_samples,  
+X,Y=make_circles(n_samples,
                  noise=0.03,              #with out this it makes perfect circle
                  random_state=42)
 """
