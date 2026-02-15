@@ -6,11 +6,12 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_circles
 import pandas as pd
-random.seed(42)
-torch.manual_seed(42)
-np.random.seed(42)
+
+random.seed(123)
+torch.manual_seed(123)
+np.random.seed(123)
 n_Sample=1000
-X,Y=make_circles(n_Sample,noise=0.03,random_state=42)
+X,Y=make_circles(n_Sample,noise=0.03,random_state=123)
 print(X[:5])
 print(X.shape)
 print(Y[:5])
@@ -22,7 +23,7 @@ plt.show()
 X=torch.from_numpy(X).to(dtype=torch.float)
 Y=torch.from_numpy(Y).to(dtype=torch.float)
 print(type(Y))
-X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.2,random_state=42)
+X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.2,random_state=123)
 print(len(X_train))
 print(X_train[:5])
 print(len(X_test))
@@ -48,7 +49,7 @@ CCN=Circle_classi_nonlinear()
 
 def accuracy(Y_pred_lab,Y_train):
     return ((torch.eq(Y_pred_lab,Y_train).sum().item())/len(Y_train))*100
-epochs=2100
+epochs=3300
 loss_fn=nn.BCEWithLogitsLoss() 
 optimizer=torch.optim.SGD(params=CCN.parameters(),lr=0.1)
 Y_test_loss_arr=[]
@@ -115,7 +116,70 @@ plot_decision_boundary(CCN, X_test, Y_test)
 plt.show()
 
 
+"""
+What Is Linearity?
 
+A model is linear if the output is just a weighted sum of inputs:
+y=w1​x1​+w2​x2​+b
+That’s a straight line.
+No matter how many linear layers you stack: Linear → Linear → Linear
+It is STILL linear.
+So stacking linear layers does NOT increase power.
+
+What Is Non-Linearity?
+
+A function is non-linear if the relationship is NOT a straight line.
+
+Examples:
+
+    Curves
+    Waves
+    Parabolas
+    Step functions
+
+Non-Linearity Is Needed in Neural Networks
+
+Without activation functions:
+
+
+    self.layer1 = nn.Linear(1,16)
+    self.layer2 = nn.Linear(16,8)
+    self.layer3 = nn.Linear(8,1)
+    return self.layer3(self.layer2(self.layer1(x)))
+
+Just a linear transformation.
+
+3-layer network behaves like: y = ax + b
+
+
+That means it CANNOT learn:
+
+    Circles
+    Spirals
+    Images
+    Speech patterns
+    XOR problem
+
+Where Non-Linearity Comes From
+
+We add activation functions like:
+    ReLU
+    Sigmoid
+    Tanh
+
+Linear → ReLU → Linear → ReLU → Linear
+Now the model can bend space.
+
+| Without Non-Linearity         | With Non-Linearity              |
+| ----------------------------- | ------------------------------- |
+| Just linear regression        | Universal function approximator |
+| Cannot model complex patterns | Can model almost anything       |
+| No hidden power               | True deep learning              |
+
+
+A neural network without activation functions is just a fancy linear regression.
+
+"""
 
 
 
