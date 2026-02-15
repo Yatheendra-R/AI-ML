@@ -69,6 +69,21 @@ for epoch in range(epochs):
     CCN.eval()
     with torch.inference_mode():
         Y_pred_logit_test=CCN(X_test).squeeze()
+        """
+        Predictions → (32, 1)
+        Targets     → (32)
+        You only need .squeeze() when:
+
+        Your model outputs (N,1)
+        But your targets are (N)
+
+        You do NOT need squeeze when:
+
+        Your model outputs (N,C)
+        And targets are (N)
+
+        That is the multi-class standard format.
+        """
         Y_pred_lab_test=torch.round(torch.sigmoid(Y_pred_logit_test))
         Y_loss_test=loss_fn(Y_pred_lab_test,Y_test)
         Y_test_acc=accuracy(Y_pred_lab_test,Y_test)
