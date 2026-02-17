@@ -90,9 +90,6 @@ for epoch in range(epochs):
         print(f"epoch {epoch} | Loss Train {Y_loss_train:.5f}   |  Loss Test {Y_loss_test:.5f}   ||   ACC Train {Y_train_acc:.2f}%  | Acc Train {Y_test_acc:.2f}%")
 
 
-    
-
-
 from helper_functions import plot_predictions, plot_decision_boundary   #using the help from other files 
 # Plot decision boundaries for training and test sets
 plt.figure(figsize=(12, 6))
@@ -104,9 +101,3 @@ plt.title("Test")
 plot_decision_boundary(SMM, X_test, Y_test)
 plt.show() 
     
-
-
-
-
-
-
