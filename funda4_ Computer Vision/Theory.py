@@ -175,4 +175,13 @@ After flattening:
     It becomes just a long vector
     Spatial relationships are lost
 
+| **PyTorch Module**            | **What It Does**                                                                                                                                                                     |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `torchvision`                 | Contains datasets, model architectures, and image transformations commonly used for computer vision problems.                                                                        |
+| `torchvision.datasets`        | Provides many example computer vision datasets (image classification, object detection, image captioning, video classification, etc.) and base classes for creating custom datasets. |
+| `torchvision.models`          | Includes well-performing and commonly used computer vision model architectures implemented in PyTorch, ready to use for your own problems.                                           |
+| `torchvision.transforms`      | Contains common image transformations (turning images into numbers, preprocessing, and data augmentation) before feeding them into models.                                           |
+| `torch.utils.data.Dataset`    | Base dataset class in PyTorch for creating your own datasets.                                                                                                                        |
+| `torch.utils.data.DataLoader` | Creates a Python iterable over a dataset, supports batching, shuffling, and parallel loading.                                                                                        |
+
 """
