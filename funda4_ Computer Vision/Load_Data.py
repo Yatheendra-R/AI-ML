@@ -165,3 +165,29 @@ Shuffle prevents bias.
 Dataset = Data Storage
 DataLoader = Data Feeding Mechanism
 """
+BATCH_SIZE=32
+train_data_load=DataLoader(train_data,  # dataset to turn into iterable
+                      batch_size=BATCH_SIZE,  #Samples per batch
+                      shuffle=True
+                      )
+test_data_load=DataLoader(test_data,batch_size=BATCH_SIZE,shuffle=False)
+
+print(f"Dataloaders: {train_data_load, test_data_load}") 
+print(f"Length of train dataloader: {len(train_data_load)} batches of {BATCH_SIZE}")
+print(f"Length of test dataloader: {len(test_data_load)} batches of {BATCH_SIZE}")
+train_features_batch, train_labels_batch=next(iter(train_data_load))  #takes first batch
+print(train_features_batch.shape)  #torch.Size([32, 1, 28, 28]
+print(train_labels_batch.shape) # torch.Size([32])  , 32 items in each batch - each has one label.
+
+"""
+iter(train_dataloader) → gives an iterator over batches.
+next(...) → gives the first batch of the iterator.
+
+train_features_batch → images of the batch, shape: [BATCH_SIZE, 1, 28, 28]
+32 → number of images in batch
+1 → number of channels (grayscale)
+28, 28 → image height × width
+
+train_labels_batch → labels of the batch, shape: [BATCH_SIZE]
+Each value is 0–9 → class of the corresponding image
+"""
