@@ -129,7 +129,8 @@ optimizer=torch.optim.SGD(params=MMB.parameters(),lr=0.1)
 epochs=3
 
 for epoch in range(epochs):
-    
+    print(f"Epoch: {epoch}\n-------")
+
     train_acc=0;    #python var
     train_loss=0;
     #(X, y) Each batch from the DataLoader returns a tuple
@@ -146,6 +147,8 @@ for epoch in range(epochs):
         train_loss += loss.item()           #Do NOT use .item() before loss.backward(),.item() extracts the scalar value as a plain Python float from a 1-element tensor.
         train_acc+=accuracy(y,torch.argmax(train_pred_loss,dim=1))
         #Mixing Python numbers and tensors is not allowed directly in older PyTorch versions or can create subtle bugs.
+        if batch % 400 == 0:
+            print(f"Looked at {batch * len(X)}/{len(train_data)} samples")
 
     train_acc=train_acc/len(train_data_load)
     train_loss=train_loss/len(train_data_load)
@@ -166,9 +169,21 @@ for epoch in range(epochs):
 
         test_acc=test_acc/len(test_data_load)
         test_loss=test_loss/len(test_data_load)
-    print(f"Epoch {epoch}: Train Loss={train_loss:.4f} | Test Loss={test_loss:.4f} | Train Acc={train_acc:.2f}% | Test Acc={test_acc:.2f}%")
+    print(f"Epoch {epoch}: Train Loss={train_loss:.4f} | Test Loss={test_loss:.4f} | Train Acc={train_acc:.2f}% | Test Acc={test_acc:.2f}%\n")
 
 
-    
+"""
+Lower loss is better. The train loss is slightly smaller than the test loss, which is normal
+— it means the model is learning but hasn’t overfit yet.
+
+From the looks of things, it seems like our model is overfitting on the training data.
+
+Overfitting means our model is learning the training data well but those patterns aren't generalizing to the testing data.
+
+Two of the main ways to fix overfitting include:
+
+Using a smaller or different model (some models fit certain kinds of data better than others).
+Using a larger dataset (the more data, the more chance a model has to learn generalizable patterns).
+"""
 
     
