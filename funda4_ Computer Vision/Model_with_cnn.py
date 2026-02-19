@@ -230,8 +230,6 @@ Second block: capture more complex, high-level features → increase channels (6
 Increasing channels deeper = more expressive power, but also more memory and computation.
 
 
-
-
 Adding dropout prevents overfitting:
 nn.Dropout(p=0.2)  # randomly zero 20% of activations
 Add after ReLU or before classifier.
@@ -348,6 +346,63 @@ Automatically adapts learning rates → smoother training.
 Faster convergence than SGD → fewer epochs to reach high accuracy.
 Often better results on complex datasets or deeper networks.
 """
+sample_test_img=[]
+sample_test_label=[]
+
+for i in range(10):
+    idx=torch.randint(0,len(test_data),(1,)).item()
+    img,label=test_data[idx]
+    sample_test_img.append(img)
+    sample_test_label.append(label)
+
+print("Length random sample img:  ",len(sample_test_img))
+print("Length random sample label: ",len(sample_test_label))
+
+def eval_model(model_name,input_x):
+    model_name.eval()
+    y_pred_list=[]
+
+    device = next(model_name.parameters()).device
+
+    with torch.inference_mode():
+
+      for i in range(len(input_x)):
+          img = input_x[i].unsqueeze(0).to(device)
+
+          y_pred_logits=model_name(img)
+          y_pred_prob=torch.softmax(y_pred_logits,dim=1)
+          y_pred_label=torch.argmax(y_pred_prob,dim=1)
+
+          y_pred_list.append(y_pred_label)
+      return y_pred_list
+
+result_pred=eval_model(MMC,sample_test_img)
+result_pred = torch.stack(result_pred).cpu().numpy()
+result_pred=result_pred.squeeze()
+print("Predicted label: ",result_pred.squeeze())
+print("True label: ",sample_test_label)
+
+fig = plt.figure(figsize=(9, 9))
+rows=5
+cols=2
 
 
+for i in range(len(result_pred)):
+  label_pred=result_pred[i]
+  label_true=sample_test_label[i]
+  fig.add_subplot(rows, cols, i+1)
+  img = sample_test_img[i]
+  
+  plt.imshow(img.squeeze(), cmap="gray")
+  if label_pred == label_true:
+        title_color = "green"
+  else:
+        title_color = "red"
 
+  plt.title(
+        f"Pred: {label_class_names[label_pred]}\nTrue: {label_class_names[label_true]}",
+        color=title_color
+    )
+  plt.axis(False);
+plt.tight_layout()
+plt.show()
