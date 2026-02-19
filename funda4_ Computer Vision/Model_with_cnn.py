@@ -71,31 +71,33 @@ class Model_MNIST_CNN(nn.Module):
                      kernel_size=(3,3),
                      padding=1,
                      stride=1,
-                     out_channels=hidden_shape),
+                     out_channels=32),
             nn.ReLU(),
-            nn.Conv2d(in_channels=hidden_shape,
+            nn.Conv2d(in_channels=32,
                      kernel_size=(3,3),
                      padding=1,
                      stride=1,
-                     out_channels=hidden_shape),
+                     out_channels=32),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2,stride=2)
+            nn.MaxPool2d(kernel_size=2,stride=2),
+            nn.Dropout(0.2)
             )
 
         self.block2=nn.Sequential(
-            nn.Conv2d(in_channels=hidden_shape,
+            nn.Conv2d(in_channels=32,
                      kernel_size=(3,3),
                      padding=1,
                      stride=1,
-                     out_channels=hidden_shape),
+                     out_channels=64),
             nn.ReLU(),
-            nn.Conv2d(in_channels=hidden_shape,
+            nn.Conv2d(in_channels=64,
                      kernel_size=(3,3),
                      padding=1,
                      stride=1,
-                     out_channels=hidden_shape),
+                     out_channels=64),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2,stride=2)
+            nn.MaxPool2d(kernel_size=2,stride=2),
+            nn.Dropout(0.2)
             )
             
 
@@ -104,8 +106,14 @@ class Model_MNIST_CNN(nn.Module):
             nn.Flatten(),
             # Where did this in_features shape come from? 
             # It's because each layer of our network compresses and changes the shape of our input data.
-            nn.Linear(in_features=hidden_shape*7*7,
+            nn.Linear(in_features=64*7*7,
+                      out_features=128),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(in_features=128,
                       out_features=output_shape))
+        
+
     
     def forward(self, x: torch.Tensor):
         x = self.block1(x)
@@ -132,5 +140,61 @@ y_pred=MMC(x_random_in)
 
 # Setup loss and optimizer
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(params=model_2.parameters(), 
-                             lr=0.1)
+optimizer = torch.optim.Adam(params=MMC.parameters(), 
+                             lr=0.001)
+
+
+
+def accuracy(y_true,y_pred):
+    return ((torch.eq(y_true,y_pred).sum().item())/(len(y_true)))*100
+
+
+
+epochs=10
+
+for epoch in range(epochs):
+    print(f"Epoch: {epoch}\n-------")
+
+    train_acc=0;    #python var
+    train_loss=0;
+    #(X, y) Each batch from the DataLoader returns a tuple
+    #enumerate() is a Python function that returns both the index and the value when looping.
+    MMC.train()
+    for batch, (X, y) in enumerate(train_data_load):
+        y_pred_logits=MMC(X)
+        
+        loss=loss_fn(y_pred_logits,y)
+        train_pred_loss=torch.softmax(y_pred_logits,dim=1)
+        optimizer.zero_grad()                   
+        loss.backward()                    
+        optimizer.step()
+        train_loss += loss.item()           #Do NOT use .item() before loss.backward(),.item() extracts the scalar value as a plain Python float from a 1-element tensor.
+        train_acc+=accuracy(y,torch.argmax(train_pred_loss,dim=1))
+        #Mixing Python numbers and tensors is not allowed directly in older PyTorch versions or can create subtle bugs.
+        if batch % 400 == 0:
+            print(f"Looked at {batch * len(X)}/{len(train_data)} samples")
+
+    train_acc=train_acc/len(train_data_load)
+    train_loss=train_loss/len(train_data_load)
+
+    MMC.eval()
+    test_acc=0;  
+    test_loss=0;
+    with torch.inference_mode():
+        for batch, (X, y) in enumerate(test_data_load):
+            y_pred_logits=MMC(X)
+            loss = loss_fn(y_pred_logits, y)
+
+            test_loss+=loss.item()
+            test_pred_loss=torch.softmax(y_pred_logits,dim=1)
+            test_acc+=accuracy(y,torch.argmax(test_pred_loss,dim=1))
+
+            
+
+        test_acc=test_acc/len(test_data_load)
+        test_loss=test_loss/len(test_data_load)
+    print(f"Epoch {epoch}: Train Loss={train_loss:.4f} | Test Loss={test_loss:.4f} | Train Acc={train_acc:.2f}% | Test Acc={test_acc:.2f}%\n")
+
+
+
+
