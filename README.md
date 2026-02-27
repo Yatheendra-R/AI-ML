@@ -13,6 +13,8 @@ Topics Covered:
   Neural Network Basics
   Loss Functions
   Gradient Descent
+  Model Training Loop
+  Evaluation Metrics
   PyTorch Basics
   Linear Regression
   Non Linear Regression
@@ -22,8 +24,4 @@ Topics Covered:
   Dataset Creation
   Custom datasets 
   (many more to come....)
-  
 
-Model Training Loop
-
-Evaluation Metrics
