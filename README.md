@@ -39,6 +39,6 @@ Many more topics will be added as I continue learning.
 - Strengthen AI and Machine Learning fundamentals  
 - Implement concepts from scratch  
 - Improve problem-solving skills  
-- Prepare for internships and real-world projects  
+- Prepare for real-world projects  
 
 This is a learning repository. The code and structure will continue to improve over time.
