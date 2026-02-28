@@ -111,6 +111,7 @@ Converting image into tesnor(number on which we can apply ML Algo)
 
 
 # Write transform for image
+#ombines multiple image transforms into one single transform pipeline.
 data_transform = transforms.Compose([
     # Resize the images to 64x64
     transforms.Resize(size=(64, 64)),

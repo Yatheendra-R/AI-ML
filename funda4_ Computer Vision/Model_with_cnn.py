@@ -349,7 +349,7 @@ Often better results on complex datasets or deeper networks.
 sample_test_img=[]
 sample_test_label=[]
 
-for i in range(10):
+for i in range(9):
     idx=torch.randint(0,len(test_data),(1,)).item()
     img,label=test_data[idx]
     sample_test_img.append(img)
@@ -383,9 +383,8 @@ print("Predicted label: ",result_pred.squeeze())
 print("True label: ",sample_test_label)
 
 fig = plt.figure(figsize=(9, 9))
-rows=5
-cols=2
-
+rows=3
+cols=3
 
 for i in range(len(result_pred)):
   label_pred=result_pred[i]
