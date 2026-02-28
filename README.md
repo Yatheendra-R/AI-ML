@@ -16,7 +16,7 @@ This repository documents my learning journey from basic Python implementations 
 - Model training and evaluation  
 - Practice problems and experiments  
 
-## Topics Covered
+## **Topics Covered**
 
 - Neural Network Basics  
 - Loss Functions  
